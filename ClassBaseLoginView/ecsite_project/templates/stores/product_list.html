@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-10 offset-1">   {#col-10 offset-1はブートストラップにより利用#}
+<h2>商品一覧</h2>
+    <form method="GET" action="{% url 'stores:product_list' %}">    {#actionにすることで、情報の送付先を指定している#}
+        <p>商品タイプ<input type="text" name="product_type_name" value="{{product_type_name}}"></p>  {# viewsから取得した場合、product_type_nameに検索した文字列が残る #}
+        <p>商品名<input type="text" name="product_name" value="{{product_name}}"></p>
+        <p>値段で並び変える：
+            昇順<input type="radio" name="order_by_price" value="1" {%if ascending%}checked{%endif%}>
+            降順<input type="radio" name="order_by_price" value="2" {%if descending%}checked{%endif%}>
+        </p>
+        <p><input type="submit" value="実行する"></p>
+    </form>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <td>種類</td>
+            <td>製品名</td>
+            <td>値段</td>
+            <td>在庫数</td>
+            <td>製造元</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in object_list %}    {#ListViewの場合、object_listの中に取得した一覧が入っている#}
+        <tr>
+            <td>{{ product.product_type.name }}</td>
+            <td><a href="{% url 'stores:product_detail' pk=product.id %}">{{ product.name }}</a></td>
+            <td>{{ product.price }}円</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.manufacturer.name }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

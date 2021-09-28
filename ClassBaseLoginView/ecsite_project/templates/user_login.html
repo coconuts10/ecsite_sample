@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {#ブラウザ上では表示させないが、データ送信させるものをhiddenタグで利用する。submitなどのトリガーにより送られる。#}
+        <input type="submit" value="ログイン">
+    </form>
+{% endblock %}
